@@ -76,7 +76,7 @@ export const QuestionReview = () => {
     }
   };
 
-  const handleStatusUpdate = async (status: 'published' | 'archived') => {
+  const handleStatusUpdate = async (status: 'published' | 'rejected' | 'archived') => {
     if (!selectedQuestion) return;
     
     // We have disabled the restriction that prevents users from approving their own questions for testing purposes
@@ -96,9 +96,11 @@ export const QuestionReview = () => {
 
       if (error) throw error;
       setNotes('');
-      fetchQuestions(); // Reload list
-    } catch (err) {
+      setSelectedQuestion(null); // Clear selection to hide it from the detail view
+      fetchQuestions(currentUser?.id || null); // Reload list
+    } catch (err: any) {
       console.error(err);
+      alert("Lỗi khi duyệt: " + (err.message || JSON.stringify(err)));
     } finally {
       setProcessing(false);
     }
@@ -233,7 +235,7 @@ export const QuestionReview = () => {
               
               <div className="flex justify-end gap-3">
                 <button 
-                  onClick={() => handleStatusUpdate('archived')}
+                  onClick={() => handleStatusUpdate('rejected')}
                   disabled={processing}
                   className="px-6 py-2 border border-error/50 text-error hover:bg-error/10 rounded-lg text-sm font-bold flex items-center transition-colors disabled:opacity-50"
                 >

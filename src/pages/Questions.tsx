@@ -203,9 +203,6 @@ export const Questions = () => {
               <Link to="/questions/new" className="px-4 py-2 bg-primary text-on-primary hover:bg-primary/90 rounded-lg text-sm font-bold transition-all shadow-sm flex items-center shadow-primary/20">
                 <Plus className="w-4 h-4 mr-2" /> {language === 'vi' ? 'Tạo Câu Hỏi' : 'New Question'}
               </Link>
-              <Link to="/questions/review" className="px-4 py-2 bg-secondary text-on-primary hover:bg-secondary/90 rounded-lg text-sm font-bold transition-all shadow-sm flex items-center shadow-secondary/20">
-                <CheckCircle2 className="w-4 h-4 mr-2" /> {language === 'vi' ? 'Duyệt Câu Hỏi' : 'Pending Review'}
-              </Link>
               {selectedItems.length > 0 && (
                 <button 
                   onClick={() => setBulkDeleteConfirm(true)}
