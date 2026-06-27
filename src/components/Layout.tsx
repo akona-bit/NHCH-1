@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  BookOpen, 
-  HelpCircle, 
-  Grid, 
-  FileText, 
-  BarChart2, 
-  Users, 
-  Settings, 
-  Bell, 
+import {
+  LayoutDashboard,
+  BookOpen,
+  HelpCircle,
+  Grid,
+  FileText,
+  BarChart2,
+  Users,
+  Settings,
+  Bell,
   Cloud,
   LogOut,
   LogIn,
@@ -59,7 +59,6 @@ export const Layout = () => {
         const name = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Unknown';
         await supabase.from('users').insert({
           user_id: user.id,
-          email: user.email,
           ho_ten: name,
           role: 'User'
         });
@@ -131,7 +130,7 @@ export const Layout = () => {
           <h1 className="text-2xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-tight">{t('app.title')}</h1>
           <p className="text-[10px] text-on-surface-variant font-mono mt-1 tracking-[0.2em] uppercase opacity-70">{t('app.subtitle')}</p>
         </div>
-        
+
         <nav className="flex-1 px-4 space-y-1 mt-4 overflow-y-auto flex flex-col">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
@@ -141,8 +140,8 @@ export const Layout = () => {
                 to={item.path}
                 className={({ isActive }) => cn(
                   "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 group relative overflow-hidden",
-                  isActive 
-                    ? "text-primary shadow-lg shadow-primary/10" 
+                  isActive
+                    ? "text-primary shadow-lg shadow-primary/10"
                     : "text-on-surface-variant hover:text-on-surface hover:bg-surface-bright/50"
                 )}
               >
@@ -159,15 +158,15 @@ export const Layout = () => {
               </NavLink>
             );
           })}
-          
+
           <div className="mt-auto pt-4 border-t border-outline-variant/50 space-y-1">
             {isAdmin && (
               <NavLink
                 to="/settings"
                 className={({ isActive }) => cn(
                   "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 group relative overflow-hidden",
-                  isActive 
-                    ? "text-primary shadow-lg shadow-primary/10" 
+                  isActive
+                    ? "text-primary shadow-lg shadow-primary/10"
                     : "text-on-surface-variant hover:text-on-surface hover:bg-surface-bright/50"
                 )}
               >
@@ -184,24 +183,24 @@ export const Layout = () => {
               to="/support"
               className={({ isActive }) => cn(
                 "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 group relative overflow-hidden",
-                isActive 
-                  ? "text-primary shadow-lg shadow-primary/10" 
+                isActive
+                  ? "text-primary shadow-lg shadow-primary/10"
                   : "text-on-surface-variant hover:text-on-surface hover:bg-surface-bright/50"
               )}
             >
               {({ isActive }) => (
-                  <>
-                    {isActive && <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent pointer-events-none" />}
-                    <HelpCircle className={cn("mr-3 h-5 w-5 transition-all duration-300 z-10", isActive ? "text-primary scale-110" : "text-outline group-hover:text-on-surface group-hover:scale-110")} />
-                    <span className="z-10">{language === 'vi' ? 'Hỗ trợ' : 'Support'}</span>
-                  </>
-                )}
+                <>
+                  {isActive && <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent pointer-events-none" />}
+                  <HelpCircle className={cn("mr-3 h-5 w-5 transition-all duration-300 z-10", isActive ? "text-primary scale-110" : "text-outline group-hover:text-on-surface group-hover:scale-110")} />
+                  <span className="z-10">{language === 'vi' ? 'Hỗ trợ' : 'Support'}</span>
+                </>
+              )}
             </NavLink>
           </div>
-          
+
           {userEmail && (
             <div className="pt-4 mt-4 border-t border-outline-variant/50 space-y-2">
-              <button 
+              <button
                 onClick={handleSignOut}
                 className="w-full flex items-center justify-center px-4 py-2.5 rounded text-sm font-medium transition-all duration-200 text-outline hover:text-error hover:bg-error/10"
               >
@@ -232,20 +231,20 @@ export const Layout = () => {
           <div className="flex items-center">
             <h2 className="text-lg font-display font-semibold tracking-tight text-on-surface">VACT Platform</h2>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="h-4 w-4 text-outline" />
               </div>
-              <input 
-                type="text" 
-                placeholder={t('app.search')} 
+              <input
+                type="text"
+                placeholder={t('app.search')}
                 className="pl-10 pr-4 py-1.5 bg-surface shadow-sm border border-outline-variant rounded-md text-sm w-64 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-outline-variant"
               />
             </div>
-            
-            <button 
+
+            <button
               onClick={toggleLanguage}
               className="p-2 text-outline hover:text-on-surface transition-colors rounded-full hover:bg-surface-bright shadow-sm font-mono text-xs font-bold"
               title="Toggle Language"
@@ -253,14 +252,14 @@ export const Layout = () => {
               {language.toUpperCase()}
             </button>
 
-            <button 
+            <button
               onClick={toggleTheme}
               className="p-2 text-outline hover:text-on-surface transition-colors rounded-full hover:bg-surface-bright shadow-sm"
               title={theme === 'dark' ? "Switch to Light Theme" : "Switch to Dark Theme"}
             >
               {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </button>
-            
+
             <button className="p-2 text-outline hover:text-on-surface transition-colors rounded-full hover:bg-surface-bright shadow-sm relative">
               <Bell className="h-5 w-5" />
               <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-error shadow-sm"></span>

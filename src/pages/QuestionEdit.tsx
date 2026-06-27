@@ -146,12 +146,14 @@ export const QuestionEdit = () => {
       if (userId) {
         const { data: userData } = await supabase.from('users').select('user_id').eq('user_id', userId).maybeSingle();
         if (!userData) {
-           await supabase.from('users').insert({
+           const { error: userInsertError } = await supabase.from('users').insert({
              user_id: userId,
-             email: user?.user?.email,
              ho_ten: user?.user?.user_metadata?.full_name || user?.user?.email?.split('@')[0] || 'Unknown',
              role: 'User'
            });
+           if (userInsertError) {
+             throw new Error(`Lỗi khi tạo user: ${userInsertError.message}`);
+           }
         }
       }
 
