@@ -239,7 +239,7 @@ CREATE POLICY "Update matrix configs" ON matrix_configs FOR UPDATE USING (auth.r
 -- =====================================
 CREATE TABLE IF NOT EXISTS notifications (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES public.users(user_id) ON DELETE CASCADE,
     title TEXT NOT NULL,
     message TEXT NOT NULL,
     read BOOLEAN DEFAULT false,
