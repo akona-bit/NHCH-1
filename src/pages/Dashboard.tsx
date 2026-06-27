@@ -96,10 +96,10 @@ export const Dashboard = () => {
   }, []);
 
   return (
-    <div className="h-full flex flex-col bg-background text-on-surface font-mono -m-6 overflow-hidden">
+    <div className="h-full flex flex-col bg-transparent text-on-surface font-sans -m-6 overflow-hidden">
       {/* Top Header */}
-      <div className="flex justify-between items-center bg-background px-8 py-5 border-b border-outline-variant shrink-0">
-        <div>
+      <div className="flex justify-between items-center px-8 py-6 shrink-0 z-10 glass-panel border-b-0 border-b-white/5 shadow-md">
+        <div className="animate-fade-in">
           <h1 className="text-2xl font-display font-bold text-on-surface tracking-wide flex items-center">
             Dashboard
           </h1>
@@ -118,12 +118,12 @@ export const Dashboard = () => {
             <Clock className="w-4 h-4" />
             <span className="tracking-wider text-xs">LATENCY: 12ms</span>
           </div>
-          <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded text-outline hover:text-on-surface transition-colors">
+          <div className="flex items-center gap-3 animate-fade-in delay-200">
+            <button className="flex items-center gap-2 px-4 py-2 bg-surface-bright/50 border border-white/10 rounded-lg text-on-surface-variant hover:text-primary hover:border-primary/50 transition-all shadow-sm">
               <TerminalSquare className="w-4 h-4" />
-              <span className="text-xs">Console</span>
+              <span className="text-xs font-semibold">Console</span>
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-transparent hover:bg-primary/10 border border-primary rounded text-primary transition-colors">
+            <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary to-secondary hover:from-primary-container hover:to-secondary-container rounded-lg text-white transition-all shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 border-0">
               <Power className="w-4 h-4" />
               <span className="text-xs">Override</span>
             </button>
@@ -135,46 +135,41 @@ export const Dashboard = () => {
         <div className="max-w-7xl mx-auto space-y-8">
           
           {/* Metrics Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6">
-            <div className="relative border border-outline-variant rounded-sm p-6 bg-surface/50 flex flex-col justify-between">
-              {/* Corner Markers */}
-              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary"></div>
-              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary"></div>
+          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6 animate-slide-up">
+            <div className="relative glass-panel rounded-xl p-6 flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 border-white/5 hover:border-primary/30 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
-              <div className="flex items-center gap-3 text-outline mb-4">
+              <div className="flex items-center gap-3 text-outline mb-4 relative z-10">
                 <FileText className="w-5 h-5 text-primary" />
                 <span className="text-xs tracking-widest uppercase font-bold text-outline">Total Questions</span>
               </div>
-              <div className="text-4xl font-bold text-on-surface tracking-tight">{stats.questions.toLocaleString()}</div>
+              <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-tight relative z-10">{stats.questions.toLocaleString()}</div>
             </div>
 
-            <div className="relative border border-outline-variant rounded-sm p-6 bg-surface/50 flex flex-col justify-between">
-              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary"></div>
-              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary"></div>
+            <div className="relative glass-panel rounded-xl p-6 flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl hover:shadow-secondary/10 transition-all duration-300 border-white/5 hover:border-secondary/30 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
-              <div className="flex items-center gap-3 text-outline mb-4">
+              <div className="flex items-center gap-3 text-outline mb-4 relative z-10">
                 <MemoryStick className="w-5 h-5 text-secondary" />
                 <span className="text-xs tracking-widest uppercase font-bold text-outline">Total Assets</span>
               </div>
               <div className="text-4xl font-bold text-primary tracking-tight">{stats.assets.toLocaleString()}</div>
             </div>
 
-            <div className="relative border border-outline-variant rounded-sm p-6 bg-surface/50 flex flex-col justify-between">
-              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary"></div>
-              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary"></div>
+            <div className="relative glass-panel rounded-xl p-6 flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 border-white/5 hover:border-primary/30 overflow-hidden delay-100">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
-              <div className="flex items-center gap-3 text-outline mb-4">
+              <div className="flex items-center gap-3 text-outline mb-4 relative z-10">
                 <Users className="w-5 h-5 text-green-500" />
                 <span className="text-xs tracking-widest uppercase font-bold text-outline">System Users</span>
               </div>
-              <div className="text-4xl font-bold text-on-surface tracking-tight">{stats.users.toLocaleString()}</div>
+              <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-tight relative z-10">{stats.users.toLocaleString()}</div>
             </div>
             
-            <div className="relative border border-outline-variant rounded-sm p-6 bg-surface/50 flex flex-col justify-between md:col-span-3 xl:col-span-1">
-              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary"></div>
-              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary"></div>
+            <div className="relative glass-panel rounded-xl p-6 flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl hover:shadow-secondary/10 transition-all duration-300 border-white/5 hover:border-secondary/30 overflow-hidden delay-200">
+              <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
-              <div className="flex items-center gap-3 text-outline mb-6">
+              <div className="flex items-center gap-3 text-outline mb-4 relative z-10">
                 <List className="w-5 h-5 text-yellow-500" />
                 <span className="text-xs tracking-widest uppercase font-bold text-outline">Entity Status</span>
               </div>
@@ -195,11 +190,10 @@ export const Dashboard = () => {
             </div>
           </div>
 
-          {/* Main Split */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-            {/* Left: Recent Exams */}
-            <div className="lg:col-span-3 border border-outline-variant rounded-sm flex flex-col bg-surface/30">
-              <div className="p-5 border-b border-outline-variant flex justify-between items-center bg-background">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-up delay-300">
+            {/* System Logs */}
+            <div className="glass-panel border-white/5 rounded-xl flex flex-col h-96 overflow-hidden shadow-lg">
+              <div className="p-4 border-b border-white/5 bg-surface-bright/20 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <FileText className="w-4 h-4 text-primary" />
                   <span className="tracking-widest text-xs font-bold text-on-surface uppercase">Recent Exams</span>
@@ -212,8 +206,6 @@ export const Dashboard = () => {
                     <tr>
                       <th className="font-normal px-4 py-3 tracking-wider uppercase text-[10px]">Exam Code</th>
                       <th className="font-normal px-4 py-3 tracking-wider uppercase text-[10px]">Name</th>
-                      <th className="font-normal px-4 py-3 tracking-wider uppercase text-[10px]">Subject</th>
-                      <th className="font-normal px-4 py-3 tracking-wider uppercase text-[10px]">Type</th>
                       <th className="font-normal px-4 py-3 tracking-wider uppercase text-[10px]">Status</th>
                     </tr>
                   </thead>
@@ -222,8 +214,6 @@ export const Dashboard = () => {
                       <tr key={exam.ma_ky_thi} className="hover:bg-surface-bright/50 transition-colors group">
                         <td className="px-4 py-4 font-mono text-primary">{exam.ma_ky_thi}</td>
                         <td className="px-4 py-4 truncate max-w-[150px]" title={exam.ten_ky_thi}>{exam.ten_ky_thi}</td>
-                        <td className="px-4 py-4 text-outline-variant">{exam.ma_ky_thi || '--'}</td>
-                        <td className="px-4 py-4 text-outline-variant">{'Final'}</td>
                         <td className="px-4 py-4">
                           <span className="px-2 py-1 rounded text-[10px] font-bold tracking-wider uppercase bg-primary/10 text-primary border border-primary/20">
                             {exam.trang_thai || 'Active'}
@@ -232,7 +222,7 @@ export const Dashboard = () => {
                       </tr>
                     )) : (
                       <tr>
-                        <td colSpan={5} className="px-4 py-8 text-center text-outline-variant italic">No recent exams found.</td>
+                        <td colSpan={3} className="px-4 py-8 text-center text-outline-variant italic">No recent exams found.</td>
                       </tr>
                     )}
                   </tbody>
@@ -241,11 +231,11 @@ export const Dashboard = () => {
             </div>
 
             {/* Right: Terminal Stream */}
-            <div className="lg:col-span-2 border border-outline-variant rounded-sm flex flex-col bg-surface/30 h-[450px]">
-              <div className="p-5 border-b border-outline-variant flex justify-between items-center bg-background">
-                <div className="flex items-center gap-3 text-primary">
+            <div className="glass-panel border-white/5 rounded-xl flex flex-col h-96 overflow-hidden shadow-lg">
+              <div className="p-4 border-b border-white/5 bg-surface-bright/20 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-primary text-sm font-semibold tracking-wider">
                   <Code2 className="w-4 h-4" />
-                  <span className="tracking-widest text-xs font-bold uppercase">Terminal Stream</span>
+                  TERMINAL STREAM
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>

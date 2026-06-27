@@ -97,10 +97,10 @@ export const Users = () => {
         </div>
       </div>
 
-      <div className="flex gap-6 flex-1 min-h-0">
-          <div className="flex-1 bg-surface shadow-sm rounded-xl border border-outline-variant flex flex-col overflow-hidden">
-            <div className="p-6 border-b border-outline-variant flex justify-between items-center shrink-0">
-              <h2 className="text-xl font-display font-semibold">{language === 'vi' ? 'Danh sách Người dùng' : 'Active Users'}</h2>
+      <div className="flex gap-6 flex-1 min-h-0 animate-slide-up">
+          <div className="flex-1 glass-panel rounded-xl flex flex-col overflow-hidden shadow-2xl shadow-black/20 border-white/5">
+            <div className="p-6 border-b border-white/5 flex justify-between items-center shrink-0 bg-surface-bright/20">
+              <h2 className="text-xl font-display font-semibold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">{language === 'vi' ? 'Danh sách Người dùng' : 'Active Users'}</h2>
             <div className="flex gap-2">
               {selectedItems.length > 0 && (
                 <button 
@@ -122,15 +122,15 @@ export const Users = () => {
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-              }} className="px-4 py-2 border border-outline-variant rounded-lg text-sm flex items-center hover:bg-surface shadow-sm transition-colors">
+              }} className="px-4 py-2 border border-white/10 rounded-lg text-sm flex items-center hover:bg-white/5 hover:border-primary/50 hover:text-primary transition-all shadow-sm">
                 <Download className="w-4 h-4 mr-2" /> Export CSV
               </button>
             </div>
           </div>
           
-          <div className="flex-1 overflow-auto">
+          <div className="flex-1 overflow-auto custom-scrollbar p-2">
             <table className="w-full text-sm text-left">
-              <thead className="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase bg-surface shadow-sm-high sticky top-0">
+              <thead className="text-[10px] font-bold text-on-surface-variant tracking-widest uppercase bg-surface-bright/20 sticky top-0 backdrop-blur-md z-10 border-b border-white/5">
                 <tr>
                   <th className="px-6 py-4 w-12">
                     <input 
@@ -152,7 +152,7 @@ export const Users = () => {
                   <tr><td colSpan={4} className="p-8 text-center text-outline-variant">{language === 'vi' ? 'Không tìm thấy người dùng.' : 'No users found.'}</td></tr>
                 ) : (
                   filteredUsers.map(user => (
-                    <tr key={user.user_id} className={cn("hover:bg-surface shadow-sm-high transition-colors", selectedItems.includes(user.user_id) && "bg-primary/5")}>
+                    <tr key={user.user_id} className={cn("hover:bg-surface-bright/40 transition-colors group border-b border-white/5 last:border-0", selectedItems.includes(user.user_id) && "bg-primary/10")}>
                       <td className="px-6 py-4">
                         <input 
                           type="checkbox" 

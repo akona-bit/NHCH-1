@@ -5,38 +5,41 @@
 
 :root {
   color-scheme: dark;
-  --app-surface: #0f172a;
-  --app-surface-dim: #020617;
-  --app-surface-bright: #1e293b;
-  --app-surface-container-lowest: #020617;
-  --app-surface-container-low: #090e1a;
-  --app-surface-container: #0f172a;
-  --app-surface-container-high: #1e293b;
-  --app-surface-container-highest: #334155;
+  /* Premium Dark Navy/OLED Palette */
+  --app-surface: #0a0f1c;
+  --app-surface-dim: #05080f;
+  --app-surface-bright: #131c31;
+  --app-surface-container-lowest: #020408;
+  --app-surface-container-low: #070a13;
+  --app-surface-container: #0a0f1c;
+  --app-surface-container-high: #131c31;
+  --app-surface-container-highest: #1e2b4a;
   
-  --app-on-surface: #f8fafc;
+  --app-on-surface: #f1f5f9;
   --app-on-surface-variant: #94a3b8;
-  --app-outline: #64748b;
+  --app-outline: #334155;
   --app-outline-variant: #1e293b;
   
-  --app-primary: #38bdf8;
-  --app-on-primary: #020617;
-  --app-primary-container: #0369a1;
+  /* Vibrant Cyan-Blue Accent */
+  --app-primary: #0ea5e9;
+  --app-on-primary: #ffffff;
+  --app-primary-container: #0284c7;
   --app-on-primary-container: #e0f2fe;
   
-  --app-secondary: #3b82f6;
-  --app-on-secondary: #eff6ff;
-  --app-secondary-container: #1d4ed8;
-  --app-on-secondary-container: #dbeafe;
+  /* Rich Indigo Secondary */
+  --app-secondary: #6366f1;
+  --app-on-secondary: #ffffff;
+  --app-secondary-container: #4338ca;
+  --app-on-secondary-container: #e0e7ff;
 
   --app-tertiary: #f59e0b;
   --app-on-tertiary: #fffbeb;
-  --app-tertiary-container: #d97706;
+  --app-tertiary-container: #b45309;
   
-  --app-error: #ef4444;
+  --app-error: #f43f5e;
   --app-on-error: #ffffff;
   
-  --app-background: #0b1121;
+  --app-background: #020617;
   --app-on-background: #f8fafc;
 }
 
@@ -53,24 +56,24 @@
   
   --app-on-surface: #0f172a;
   --app-on-surface-variant: #475569;
-  --app-outline: #64748b;
+  --app-outline: #94a3b8;
   --app-outline-variant: #e2e8f0;
   
-  --app-primary: #0ea5e9;
+  --app-primary: #0284c7;
   --app-on-primary: #ffffff;
-  --app-primary-container: #e0f2fe;
+  --app-primary-container: #bae6fd;
   --app-on-primary-container: #0369a1;
   
-  --app-secondary: #3b82f6;
+  --app-secondary: #4f46e5;
   --app-on-secondary: #ffffff;
-  --app-secondary-container: #dbeafe;
-  --app-on-secondary-container: #1d4ed8;
+  --app-secondary-container: #c7d2fe;
+  --app-on-secondary-container: #3730a3;
 
-  --app-tertiary: #f59e0b;
+  --app-tertiary: #d97706;
   --app-on-tertiary: #ffffff;
-  --app-tertiary-container: #fef3c7;
+  --app-tertiary-container: #fde68a;
   
-  --app-error: #ef4444;
+  --app-error: #e11d48;
   --app-on-error: #ffffff;
   
   --app-background: #f8fafc;
@@ -119,21 +122,64 @@
 
 body {
   background-color: var(--app-background);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.08) 0px, transparent 50%);
+  background-attachment: fixed;
   color: var(--app-on-background);
+  min-height: 100vh;
 }
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(10, 15, 28, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.theme-light .glass-panel {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--app-surface-container-lowest);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--app-surface-container-high);
-  border-radius: 4px;
+  background: var(--app-surface-container-highest);
+  border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--app-surface-bright);
+  background: var(--app-primary);
 }

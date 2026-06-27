@@ -114,10 +114,10 @@ export const Layout = () => {
   return (
     <div className="flex h-screen bg-background text-on-background overflow-hidden font-sans selection:bg-primary/30">
       {/* Sidebar */}
-      <aside className="w-64 border-r border-outline-variant bg-surface flex flex-col z-20 shadow-sm">
+      <aside className="w-64 glass-panel border-r-0 border-r-white/5 flex flex-col z-20 transition-all duration-300">
         <div className="p-6">
-          <h1 className="text-2xl font-display font-bold text-primary tracking-tight">{t('app.title')}</h1>
-          <p className="text-xs text-on-surface-variant font-mono mt-1 tracking-widest uppercase opacity-80">{t('app.subtitle')}</p>
+          <h1 className="text-2xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-tight">{t('app.title')}</h1>
+          <p className="text-[10px] text-on-surface-variant font-mono mt-1 tracking-[0.2em] uppercase opacity-70">{t('app.subtitle')}</p>
         </div>
         
         <nav className="flex-1 px-4 space-y-1 mt-4 overflow-y-auto flex flex-col">
@@ -127,18 +127,23 @@ export const Layout = () => {
               <NavLink
                 key={item.name}
                 to={item.path}
-                className={cn(
-                  "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 group",
+                className={({ isActive }) => cn(
+                  "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 group relative overflow-hidden",
                   isActive 
-                    ? "bg-primary/10 text-primary border border-primary/20 " 
-                    : "text-on-surface-variant hover:bg-surface-bright shadow-sm-low hover:text-on-surface"
+                    ? "text-primary shadow-lg shadow-primary/10" 
+                    : "text-on-surface-variant hover:text-on-surface hover:bg-white/5"
                 )}
               >
-                <item.icon className={cn(
-                  "mr-3 h-5 w-5 transition-colors",
-                  isActive ? "text-primary" : "text-outline group-hover:text-on-surface"
-                )} />
-                {item.name}
+                {({ isActive }) => (
+                  <>
+                    {isActive && <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent pointer-events-none" />}
+                    <item.icon className={cn(
+                      "mr-3 h-5 w-5 transition-all duration-300 z-10",
+                      isActive ? "text-primary scale-110" : "text-outline group-hover:text-on-surface group-hover:scale-110"
+                    )} />
+                    <span className="z-10">{item.name}</span>
+                  </>
+                )}
               </NavLink>
             );
           })}
@@ -148,27 +153,37 @@ export const Layout = () => {
               <NavLink
                 to="/settings"
                 className={({ isActive }) => cn(
-                  "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 group",
+                  "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 group relative overflow-hidden",
                   isActive 
-                    ? "bg-primary/10 text-primary border border-primary/20 " 
-                    : "text-on-surface-variant hover:bg-surface-bright shadow-sm-low hover:text-on-surface"
+                    ? "text-primary shadow-lg shadow-primary/10" 
+                    : "text-on-surface-variant hover:text-on-surface hover:bg-white/5"
                 )}
               >
-                <Settings className={cn("mr-3 h-5 w-5 transition-colors", location.pathname === '/settings' ? "text-primary" : "text-outline group-hover:text-on-surface")} />
-                {language === 'vi' ? 'Cài đặt' : 'Settings'}
+                {({ isActive }) => (
+                  <>
+                    {isActive && <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent pointer-events-none" />}
+                    <Settings className={cn("mr-3 h-5 w-5 transition-all duration-300 z-10", isActive ? "text-primary scale-110" : "text-outline group-hover:text-on-surface group-hover:scale-110")} />
+                    <span className="z-10">{language === 'vi' ? 'Cài đặt' : 'Settings'}</span>
+                  </>
+                )}
               </NavLink>
             )}
             <NavLink
               to="/support"
               className={({ isActive }) => cn(
-                "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 group",
+                "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 group relative overflow-hidden",
                 isActive 
-                  ? "bg-primary/10 text-primary border border-primary/20 " 
-                  : "text-on-surface-variant hover:bg-surface-bright shadow-sm-low hover:text-on-surface"
+                  ? "text-primary shadow-lg shadow-primary/10" 
+                  : "text-on-surface-variant hover:text-on-surface hover:bg-white/5"
               )}
             >
-              <HelpCircle className={cn("mr-3 h-5 w-5 transition-colors", location.pathname === '/support' ? "text-primary" : "text-outline group-hover:text-on-surface")} />
-              {language === 'vi' ? 'Hỗ trợ' : 'Support'}
+              {({ isActive }) => (
+                  <>
+                    {isActive && <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent pointer-events-none" />}
+                    <HelpCircle className={cn("mr-3 h-5 w-5 transition-all duration-300 z-10", isActive ? "text-primary scale-110" : "text-outline group-hover:text-on-surface group-hover:scale-110")} />
+                    <span className="z-10">{language === 'vi' ? 'Hỗ trợ' : 'Support'}</span>
+                  </>
+                )}
             </NavLink>
           </div>
           
@@ -185,9 +200,9 @@ export const Layout = () => {
           )}
         </nav>
 
-        <div className="p-4 border-t border-outline-variant">
-          <div className="flex items-center px-3 py-3 bg-surface shadow-sm rounded-lg border border-outline-variant/50 relative group">
-            <div className="w-8 h-8 rounded-full bg-primary/20 border border-primary flex items-center justify-center text-primary font-bold text-sm mr-3 shrink-0">
+        <div className="p-4 border-t border-white/5">
+          <div className="flex items-center px-3 py-3 bg-surface-bright/30 backdrop-blur-sm rounded-lg border border-white/5 relative group hover:bg-surface-bright/50 transition-colors duration-300">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary font-bold text-sm mr-3 shrink-0 shadow-lg shadow-primary/20">
               {userName ? userName.charAt(0).toUpperCase() : (userEmail ? userEmail.charAt(0).toUpperCase() : 'U')}
             </div>
             <div className="flex-1 min-w-0">
@@ -201,7 +216,7 @@ export const Layout = () => {
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden relative">
         {/* Topbar */}
-        <header className="h-16 border-b border-outline-variant bg-surface/80 backdrop-blur-md flex items-center justify-between px-8 z-10 sticky top-0">
+        <header className="h-16 glass-panel border-b-0 border-b-white/5 flex items-center justify-between px-8 z-10 sticky top-0">
           <div className="flex items-center">
             <h2 className="text-lg font-display font-semibold tracking-tight text-on-surface">VACT Platform</h2>
           </div>
