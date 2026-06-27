@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "katex/dist/katex.min.css";
+
+:root {
+  color-scheme: dark;
+  --app-surface: #0f172a;
+  --app-surface-dim: #020617;
+  --app-surface-bright: #1e293b;
+  --app-surface-container-lowest: #020617;
+  --app-surface-container-low: #090e1a;
+  --app-surface-container: #0f172a;
+  --app-surface-container-high: #1e293b;
+  --app-surface-container-highest: #334155;
+  
+  --app-on-surface: #f8fafc;
+  --app-on-surface-variant: #94a3b8;
+  --app-outline: #64748b;
+  --app-outline-variant: #1e293b;
+  
+  --app-primary: #38bdf8;
+  --app-on-primary: #020617;
+  --app-primary-container: #0369a1;
+  --app-on-primary-container: #e0f2fe;
+  
+  --app-secondary: #3b82f6;
+  --app-on-secondary: #eff6ff;
+  --app-secondary-container: #1d4ed8;
+  --app-on-secondary-container: #dbeafe;
+
+  --app-tertiary: #f59e0b;
+  --app-on-tertiary: #fffbeb;
+  --app-tertiary-container: #d97706;
+  
+  --app-error: #ef4444;
+  --app-on-error: #ffffff;
+  
+  --app-background: #0b1121;
+  --app-on-background: #f8fafc;
+}
+
+:root.theme-light {
+  color-scheme: light;
+  --app-surface: #ffffff;
+  --app-surface-dim: #f8fafc;
+  --app-surface-bright: #f1f5f9;
+  --app-surface-container-lowest: #ffffff;
+  --app-surface-container-low: #f8fafc;
+  --app-surface-container: #f1f5f9;
+  --app-surface-container-high: #e2e8f0;
+  --app-surface-container-highest: #cbd5e1;
+  
+  --app-on-surface: #0f172a;
+  --app-on-surface-variant: #475569;
+  --app-outline: #64748b;
+  --app-outline-variant: #e2e8f0;
+  
+  --app-primary: #0ea5e9;
+  --app-on-primary: #ffffff;
+  --app-primary-container: #e0f2fe;
+  --app-on-primary-container: #0369a1;
+  
+  --app-secondary: #3b82f6;
+  --app-on-secondary: #ffffff;
+  --app-secondary-container: #dbeafe;
+  --app-on-secondary-container: #1d4ed8;
+
+  --app-tertiary: #f59e0b;
+  --app-on-tertiary: #ffffff;
+  --app-tertiary-container: #fef3c7;
+  
+  --app-error: #ef4444;
+  --app-on-error: #ffffff;
+  
+  --app-background: #f8fafc;
+  --app-on-background: #0f172a;
+}
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-surface: var(--app-surface);
+  --color-surface-dim: var(--app-surface-dim);
+  --color-surface-bright: var(--app-surface-bright);
+  --color-surface-container-lowest: var(--app-surface-container-lowest);
+  --color-surface-container-low: var(--app-surface-container-low);
+  --color-surface-container: var(--app-surface-container);
+  --color-surface-container-high: var(--app-surface-container-high);
+  --color-surface-container-highest: var(--app-surface-container-highest);
+  
+  --color-on-surface: var(--app-on-surface);
+  --color-on-surface-variant: var(--app-on-surface-variant);
+  --color-outline: var(--app-outline);
+  --color-outline-variant: var(--app-outline-variant);
+  
+  --color-primary: var(--app-primary);
+  --color-on-primary: var(--app-on-primary);
+  --color-primary-container: var(--app-primary-container);
+  --color-on-primary-container: var(--app-on-primary-container);
+  
+  --color-secondary: var(--app-secondary);
+  --color-on-secondary: var(--app-on-secondary);
+  --color-secondary-container: var(--app-secondary-container);
+  --color-on-secondary-container: var(--app-on-secondary-container);
+
+  --color-tertiary: var(--app-tertiary);
+  --color-on-tertiary: var(--app-on-tertiary);
+  --color-tertiary-container: var(--app-tertiary-container);
+  
+  --color-error: var(--app-error);
+  --color-on-error: var(--app-on-error);
+  
+  --color-background: var(--app-background);
+  --color-on-background: var(--app-on-background);
+}
+
+body {
+  background-color: var(--app-background);
+  color: var(--app-on-background);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--app-surface-container-lowest);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--app-surface-container-high);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--app-surface-bright);
+}
