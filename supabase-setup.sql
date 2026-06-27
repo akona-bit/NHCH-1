@@ -233,3 +233,24 @@ CREATE POLICY "View all matrix configs" ON matrix_configs FOR SELECT USING (true
 CREATE POLICY "Insert matrix configs" ON matrix_configs FOR INSERT WITH CHECK (auth.role() = 'authenticated');
 CREATE POLICY "Update matrix configs" ON matrix_configs FOR UPDATE USING (auth.role() = 'authenticated');
 
+
+-- =====================================
+-- 6. NOTIFICATIONS
+-- =====================================
+CREATE TABLE IF NOT EXISTS notifications (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    message TEXT NOT NULL,
+    read BOOLEAN DEFAULT false,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now())
+);
+
+ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Users can view their own notifications" ON notifications;
+DROP POLICY IF EXISTS "Anyone can insert notifications" ON notifications;
+DROP POLICY IF EXISTS "Users can update their own notifications" ON notifications;
+
+CREATE POLICY "Users can view their own notifications" ON notifications FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Anyone can insert notifications" ON notifications FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+CREATE POLICY "Users can update their own notifications" ON notifications FOR UPDATE USING (auth.uid() = user_id);

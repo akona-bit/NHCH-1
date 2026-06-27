@@ -79,13 +79,10 @@ export const QuestionReview = () => {
   const handleStatusUpdate = async (status: 'published' | 'rejected' | 'archived') => {
     if (!selectedQuestion) return;
     
-    // We have disabled the restriction that prevents users from approving their own questions for testing purposes
-    /*
-    if (status === 'published' && selectedQuestion.nguoi_tao === currentUser?.id) {
-      alert("Bạn không thể duyệt câu hỏi do chính mình tạo. (You cannot approve your own question.)");
+    if (status === 'rejected' && !notes.trim()) {
+      alert("Bạn phải nhập lý do (Reviewer Notes) trước khi từ chối câu hỏi.");
       return;
     }
-    */
 
     setProcessing(true);
     try {
@@ -95,6 +92,14 @@ export const QuestionReview = () => {
         .eq('ma_cau_hoi', selectedQuestion.ma_cau_hoi);
 
       if (error) throw error;
+      
+      if (status === 'rejected' && selectedQuestion.nguoi_tao) {
+        await supabase.from('notifications').insert({
+          user_id: selectedQuestion.nguoi_tao,
+          title: 'Câu hỏi của bạn bị từ chối / Question Rejected',
+          message: `Câu hỏi ${selectedQuestion.ma_cau_hoi} đã bị từ chối với lý do: ${notes}`
+        });
+      }
       setNotes('');
       setSelectedQuestion(null); // Clear selection to hide it from the detail view
       fetchQuestions(currentUser?.id || null); // Reload list
@@ -167,13 +172,16 @@ export const QuestionReview = () => {
       <div className="flex-1 flex flex-col gap-6">
         {selectedQuestion ? (
           <>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center bg-surface-bright/50 p-5 rounded-2xl border border-outline-variant/50 shadow-sm backdrop-blur-md">
               <div>
-                <div className="flex gap-2 mb-2 font-mono text-[10px]">
-                  <span className="px-2 py-0.5 bg-surface shadow-sm border border-outline-variant rounded text-outline">ID: {selectedQuestion.ma_cau_hoi}</span>
-                  <span className="px-2 py-0.5 bg-surface shadow-sm border border-outline-variant rounded text-on-surface">Lvl {selectedQuestion.muc_do}</span>
+                <div className="flex gap-3 mb-3 font-mono text-[10px] uppercase tracking-wider">
+                  <span className="px-2.5 py-1 bg-background shadow-sm border border-outline-variant/50 rounded-md text-outline">ID: {selectedQuestion.ma_cau_hoi}</span>
+                  <span className="px-2.5 py-1 bg-primary/10 border border-primary/20 rounded-md text-primary font-bold">Lvl {selectedQuestion.muc_do}</span>
+                  <span className="px-2.5 py-1 bg-secondary/10 border border-secondary/20 rounded-md text-secondary font-bold flex items-center">
+                    Tác giả: {selectedQuestion.users?.ho_ten || 'Unknown'} <span className="opacity-50 ml-1">({selectedQuestion.nguoi_tao ? selectedQuestion.nguoi_tao.substring(0, 8) : 'N/A'})</span>
+                  </span>
                 </div>
-                <h1 className="text-2xl font-display font-bold text-on-surface">Review Submission</h1>
+                <h1 className="text-2xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">Review Submission</h1>
               </div>
             </div>
 

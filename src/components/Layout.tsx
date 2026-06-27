@@ -35,6 +35,7 @@ export const Layout = () => {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [authLoading, setAuthLoading] = useState(true);
   const { theme, setTheme, language, setLanguage, t } = useSettings();
 
@@ -91,8 +92,29 @@ export const Layout = () => {
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => { subscription.unsubscribe(); };
   }, [navigate]);
+
+  useEffect(() => {
+    if (!userId) return;
+    const fetchUnread = async () => {
+      const { count } = await supabase
+        .from('notifications')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', userId)
+        .eq('read', false);
+      setUnreadCount(count || 0);
+    };
+    fetchUnread();
+    
+    const sub = supabase.channel('public:notifications')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'notifications', filter: `user_id=eq.${userId}` }, fetchUnread)
+      .subscribe();
+      
+    return () => {
+      supabase.removeChannel(sub);
+    };
+  }, [userId]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -264,9 +286,17 @@ export const Layout = () => {
               {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </button>
 
-            <button className="p-2 text-outline hover:text-on-surface transition-colors rounded-full hover:bg-surface-bright shadow-sm relative">
+            <button 
+              onClick={() => navigate('/notifications')}
+              className="p-2 text-outline hover:text-on-surface transition-colors rounded-full hover:bg-surface-bright shadow-sm relative"
+              title="Notifications"
+            >
               <Bell className="h-5 w-5" />
-              <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-error shadow-sm"></span>
+              {unreadCount > 0 && (
+                <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-error text-[9px] font-bold text-white shadow-sm">
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
             </button>
             <button className="p-2 text-primary transition-colors rounded-full bg-primary/10 border border-primary/20">
               <Cloud className="h-5 w-5" />

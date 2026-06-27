@@ -34,9 +34,20 @@ export const QuestionEdit = () => {
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [currentUser, setCurrentUser] = useState<{id: string, name: string} | null>(null);
 
   useEffect(() => {
     fetchNodes();
+    supabase.auth.getUser().then(({ data }) => {
+      if (data?.user) {
+        supabase.from('users').select('ho_ten').eq('user_id', data.user.id).maybeSingle().then(res => {
+          setCurrentUser({
+            id: data.user.id,
+            name: res.data?.ho_ten || data.user.user_metadata?.full_name || data.user.email?.split('@')[0] || 'Unknown'
+          });
+        });
+      }
+    });
   }, []);
 
   const fetchNodes = async () => {
@@ -231,7 +242,14 @@ export const QuestionEdit = () => {
           </div>
           <div>
             <h1 className="text-xl font-display font-bold text-on-surface tracking-wide">Question Designer</h1>
-            <p className="text-[10px] text-outline font-mono uppercase tracking-widest mt-0.5">Authoring Interface</p>
+            <div className="flex gap-2 items-center mt-1">
+              <span className="text-[10px] text-outline font-mono uppercase tracking-widest">Authoring Interface</span>
+              {currentUser && (
+                <span className="px-2 py-0.5 bg-secondary/10 border border-secondary/20 rounded text-secondary flex items-center text-[9px] font-mono font-bold uppercase tracking-widest">
+                  Tác giả: {currentUser.name} <span className="opacity-50 ml-1">({currentUser.id.substring(0,8)})</span>
+                </span>
+              )}
+            </div>
           </div>
         </div>
         <div className="flex gap-4">

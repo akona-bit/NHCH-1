@@ -22,6 +22,7 @@ import { SignIn } from './pages/SignIn';
 import { SignUp } from './pages/SignUp';
 import { SystemAlerts } from './pages/SystemAlerts';
 import { Settings } from './pages/Settings';
+import { Notifications } from './pages/Notifications';
 
 export default function App() {
   return (
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="candidates" element={<Candidates />} />
           <Route path="compare" element={<Compare />} />
           <Route path="alerts" element={<SystemAlerts />} />
+          <Route path="notifications" element={<Notifications />} />
           <Route path="settings" element={<Settings />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
