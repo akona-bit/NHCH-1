@@ -202,8 +202,16 @@ export const QuestionEdit = () => {
       if (aError) throw aError;
 
       setSuccess(true);
-      setTimeout(() => navigate('/questions/review'), 1500);
-      
+      // Optional: Clear form
+      setContent('');
+      setAnswers([
+        { id: 1, content: '', isCorrect: true },
+        { id: 2, content: '', isCorrect: false },
+        { id: 3, content: '', isCorrect: false },
+        { id: 4, content: '', isCorrect: false }
+      ]);
+      setSelectedNodes([]);
+      setTimeout(() => setSuccess(false), 3000);
     } catch (err: any) {
       setError(err.message || "Failed to save question");
     } finally {

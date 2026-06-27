@@ -42,9 +42,8 @@ export const QuestionReview = () => {
         .eq('tinh_trang', 'draft')
         .order('ngay_cap_nhat', { ascending: false });
 
-      if (userId) {
-        query = query.neq('nguoi_tao', userId);
-      }
+      // Optional: If we want reviewers to not review their own questions, we would do:
+      // if (userId) query = query.neq('nguoi_tao', userId);
 
       const { data: qData, error: qError } = await query;
       if (qError) throw qError;
