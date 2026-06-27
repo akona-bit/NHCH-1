@@ -51,7 +51,7 @@ export const Layout = () => {
         .from('users')
         .select('ho_ten')
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
       if (data) setUserName(data.ho_ten);
     } catch (err) {
       console.error('Error fetching user name:', err);
