@@ -45,16 +45,28 @@ export const Layout = () => {
     setLanguage(language === 'vi' ? 'en' : 'vi');
   };
 
-  const fetchUserName = async (userId: string) => {
+  const ensureUserExists = async (user: any) => {
     try {
       const { data } = await supabase
         .from('users')
         .select('ho_ten')
-        .eq('user_id', userId)
+        .eq('user_id', user.id)
         .maybeSingle();
-      if (data) setUserName(data.ho_ten);
+
+      if (data) {
+        setUserName(data.ho_ten);
+      } else {
+        const name = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Unknown';
+        await supabase.from('users').insert({
+          user_id: user.id,
+          email: user.email,
+          ho_ten: name,
+          role: 'User'
+        });
+        setUserName(name);
+      }
     } catch (err) {
-      console.error('Error fetching user name:', err);
+      console.error('Error ensuring user exists:', err);
     }
   };
 
@@ -65,7 +77,7 @@ export const Layout = () => {
       } else {
         setUserEmail(session.user?.email || null);
         setUserId(session.user?.id || null);
-        if (session.user?.id) fetchUserName(session.user.id);
+        if (session.user) ensureUserExists(session.user);
       }
       setAuthLoading(false);
     });
@@ -76,7 +88,7 @@ export const Layout = () => {
       } else {
         setUserEmail(session.user?.email || null);
         setUserId(session.user?.id || null);
-        if (session.user?.id) fetchUserName(session.user.id);
+        if (session.user) ensureUserExists(session.user);
       }
     });
 
