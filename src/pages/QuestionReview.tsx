@@ -37,7 +37,8 @@ export const QuestionReview = () => {
           muc_do,
           ngay_cap_nhat,
           nguoi_tao,
-          users:nguoi_tao (ho_ten)
+          users:nguoi_tao (ho_ten),
+          ngu_lieu:ma_ngu_lieu (ma_ngu_lieu, noi_dung)
         `)
         .eq('tinh_trang', 'draft')
         .order('ngay_cap_nhat', { ascending: false });
@@ -175,7 +176,21 @@ export const QuestionReview = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto pr-2 space-y-6">
-              <div className="bg-surface shadow-sm rounded-xl border border-outline-variant p-6">
+              {selectedQuestion.ngu_lieu && selectedQuestion.ngu_lieu.noi_dung && (
+                <div className="bg-surface shadow-sm rounded-xl border border-outline-variant p-6 mb-6">
+                  <h3 className="text-[10px] font-bold text-on-surface tracking-widest uppercase mb-4 flex items-center text-primary">
+                    <FileText className="w-3 h-3 mr-2" /> STIMULUS / ASSET (NGỮ LIỆU ĐÍNH KÈM)
+                  </h3>
+                  <div className="bg-background border border-outline-variant/50 rounded-lg p-5">
+                    <MathRenderer 
+                      content={selectedQuestion.ngu_lieu.noi_dung}
+                      className="text-sm font-mono text-on-surface whitespace-pre-wrap"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="bg-surface shadow-sm rounded-xl border border-outline-variant p-6 mb-6">
                 <h3 className="text-[10px] font-bold text-on-surface tracking-widest uppercase mb-4 flex items-center">
                   <FileText className="w-3 h-3 mr-2" /> QUESTION CONTENT
                 </h3>
