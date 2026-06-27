@@ -33,6 +33,7 @@ export const Layout = () => {
   const navigate = useNavigate();
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const { theme, setTheme, language, setLanguage, t } = useSettings();
 
@@ -63,6 +64,7 @@ export const Layout = () => {
         navigate('/signin');
       } else {
         setUserEmail(session.user?.email || null);
+        setUserId(session.user?.id || null);
         if (session.user?.id) fetchUserName(session.user.id);
       }
       setAuthLoading(false);
@@ -73,6 +75,7 @@ export const Layout = () => {
         navigate('/signin');
       } else {
         setUserEmail(session.user?.email || null);
+        setUserId(session.user?.id || null);
         if (session.user?.id) fetchUserName(session.user.id);
       }
     });
@@ -89,6 +92,10 @@ export const Layout = () => {
     return <div className="h-screen w-screen flex items-center justify-center bg-background text-on-background">Loading...</div>;
   }
 
+  const ADMIN_ID = 'f1a81610-bd37-4cc6-9c22-df3e3ea9255d';
+  const isAdmin = userId === ADMIN_ID;
+  const restrictedPaths = ['/users', '/alerts', '/analytics', '/irt-analysis'];
+
   const navItems = [
     { name: t('nav.dashboard'), icon: LayoutDashboard, path: '/' },
     { name: t('nav.spatial_map'), icon: Share2, path: '/spatial-map' },
@@ -102,7 +109,7 @@ export const Layout = () => {
     { name: language === 'vi' ? 'Hồ sơ Ứng viên' : 'Candidates', icon: Users, path: '/candidates' },
     { name: language === 'vi' ? 'So sánh' : 'Compare', icon: GitCompare, path: '/compare' },
     { name: t('nav.users'), icon: Users, path: '/users' },
-  ];
+  ].filter(item => isAdmin || !restrictedPaths.includes(item.path));
 
   return (
     <div className="flex h-screen bg-background text-on-background overflow-hidden font-sans selection:bg-primary/30">
@@ -137,18 +144,20 @@ export const Layout = () => {
           })}
           
           <div className="mt-auto pt-4 border-t border-outline-variant/50 space-y-1">
-            <NavLink
-              to="/settings"
-              className={({ isActive }) => cn(
-                "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 group",
-                isActive 
-                  ? "bg-primary/10 text-primary border border-primary/20 " 
-                  : "text-on-surface-variant hover:bg-surface-bright shadow-sm-low hover:text-on-surface"
-              )}
-            >
-              <Settings className={cn("mr-3 h-5 w-5 transition-colors", location.pathname === '/settings' ? "text-primary" : "text-outline group-hover:text-on-surface")} />
-              {language === 'vi' ? 'Cài đặt' : 'Settings'}
-            </NavLink>
+            {isAdmin && (
+              <NavLink
+                to="/settings"
+                className={({ isActive }) => cn(
+                  "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 group",
+                  isActive 
+                    ? "bg-primary/10 text-primary border border-primary/20 " 
+                    : "text-on-surface-variant hover:bg-surface-bright shadow-sm-low hover:text-on-surface"
+                )}
+              >
+                <Settings className={cn("mr-3 h-5 w-5 transition-colors", location.pathname === '/settings' ? "text-primary" : "text-outline group-hover:text-on-surface")} />
+                {language === 'vi' ? 'Cài đặt' : 'Settings'}
+              </NavLink>
+            )}
             <NavLink
               to="/support"
               className={({ isActive }) => cn(

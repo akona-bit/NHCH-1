@@ -16,16 +16,20 @@ export const QuestionReview = () => {
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user) setCurrentUser(data.user);
+      if (data.user) {
+        setCurrentUser(data.user);
+        fetchQuestions(data.user.id);
+      } else {
+        fetchQuestions(null);
+      }
     });
-    fetchQuestions();
   }, []);
 
-  const fetchQuestions = async () => {
+  const fetchQuestions = async (userId: string | null = null) => {
     setLoading(true);
     try {
       // Load questions that are draft
-      const { data: qData, error: qError } = await supabase
+      let query = supabase
         .from('cau_hoi')
         .select(`
           ma_cau_hoi,
@@ -38,6 +42,11 @@ export const QuestionReview = () => {
         .eq('tinh_trang', 'draft')
         .order('ngay_cap_nhat', { ascending: false });
 
+      if (userId) {
+        query = query.neq('nguoi_tao', userId);
+      }
+
+      const { data: qData, error: qError } = await query;
       if (qError) throw qError;
       setQuestions(qData || []);
       
