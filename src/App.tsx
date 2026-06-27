@@ -36,6 +36,7 @@ export default function App() {
           <Route path="knowledge" element={<Knowledge />} />
           <Route path="questions" element={<Questions />} />
           <Route path="questions/new" element={<QuestionEdit />} />
+          <Route path="questions/edit/:id" element={<QuestionEdit />} />
           <Route path="questions/review" element={<QuestionReview />} />
           <Route path="matrix" element={<Matrix />} />
           <Route path="exams" element={<Exams />} />

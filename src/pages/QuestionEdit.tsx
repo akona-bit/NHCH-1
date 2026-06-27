@@ -3,7 +3,7 @@ import { Save, ShieldCheck, FileText, Image as ImageIcon, Code, Type, LayoutList
 import { cn } from '../lib/utils';
 import { MathRenderer } from '../components/MathRenderer';
 import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { LoadingOverlay } from '../components/LoadingOverlay';
 import { KnowledgeTree } from '../components/KnowledgeTree';
 import { syncKnowledgeTree, KnowledgeTreeNode, flattenKnowledgeTree } from '../services/knowledgeService';
@@ -12,6 +12,9 @@ export const QuestionEdit = () => {
   const [content, setContent] = useState('Enter question content here...\n\nSupports LaTeX:\nInline: $E = mc^2$\nBlock: $$\\int_0^1 x^2 dx$$');
   const [previewMode, setPreviewMode] = useState(false);
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const isEditMode = !!id;
+  const [isReadOnly, setIsReadOnly] = useState(false);
 
   // Supabase State
   const [treeNodes, setTreeNodes] = useState<KnowledgeTreeNode[]>([]);
@@ -48,7 +51,40 @@ export const QuestionEdit = () => {
         });
       }
     });
-  }, []);
+    
+    if (id) {
+      fetchExistingQuestion(id);
+    }
+  }, [id]);
+
+  const fetchExistingQuestion = async (qId: string) => {
+    try {
+      const { data: qData, error } = await supabase.from('cau_hoi').select('*').eq('ma_cau_hoi', qId).single();
+      if (error) throw error;
+      
+      setContent(qData.noi_dung || '');
+      setCognitiveLevel(qData.muc_do || 1);
+      setQuestionType(qData.loai_cau_hoi || 'multiple_choice');
+      setSelectedNguLieu(qData.ma_ngu_lieu || null);
+      
+      if (qData.tinh_trang === 'published') {
+        setIsReadOnly(true);
+      }
+
+      const { data: ansData } = await supabase.from('dap_an').select('*').eq('ma_cau_hoi', qId);
+      if (ansData && ansData.length > 0) {
+        setAnswers(ansData.map((a: any) => ({ id: a.ma_dap_an, content: a.noi_dung, isCorrect: a.is_correct })));
+      }
+
+      const { data: ktData } = await supabase.from('kien_thuc_cau_hoi').select('ma_kien_thuc').eq('ma_cau_hoi', qId);
+      if (ktData) {
+        setSelectedNodes(ktData.map((k: any) => k.ma_kien_thuc));
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Failed to load existing question.");
+    }
+  };
 
   const fetchNodes = async () => {
     const data = await syncKnowledgeTree();
@@ -181,18 +217,37 @@ export const QuestionEdit = () => {
         finalNguLieuId = createdNl.ma_ngu_lieu;
       }
 
-      // 1. Insert Question
-      const { data: qData, error: qError } = await supabase.from('cau_hoi').insert({
-        noi_dung: content,
-        muc_do: cognitiveLevel,
-        loai_cau_hoi: questionType,
-        nguoi_tao: userId,
-        ma_ngu_lieu: finalNguLieuId,
-        tinh_trang: 'draft'
-      }).select('ma_cau_hoi').single();
-
-      if (qError) throw qError;
-      const questionId = qData.ma_cau_hoi;
+      // 1. Insert or Update Question
+      let questionId = null;
+      if (isEditMode) {
+        const { error: qError } = await supabase.from('cau_hoi').update({
+          noi_dung: content,
+          muc_do: cognitiveLevel,
+          loai_cau_hoi: questionType,
+          nguoi_tao: userId,
+          ma_ngu_lieu: finalNguLieuId,
+          tinh_trang: 'draft'
+        }).eq('ma_cau_hoi', id);
+        
+        if (qError) throw qError;
+        questionId = id;
+        
+        // Clean up old relations
+        await supabase.from('kien_thuc_cau_hoi').delete().eq('ma_cau_hoi', id);
+        await supabase.from('dap_an').delete().eq('ma_cau_hoi', id);
+      } else {
+        const { data: qData, error: qError } = await supabase.from('cau_hoi').insert({
+          noi_dung: content,
+          muc_do: cognitiveLevel,
+          loai_cau_hoi: questionType,
+          nguoi_tao: userId,
+          ma_ngu_lieu: finalNguLieuId,
+          tinh_trang: 'draft'
+        }).select('ma_cau_hoi').single();
+  
+        if (qError) throw qError;
+        questionId = qData.ma_cau_hoi;
+      }
 
       // 2. Insert Knowledge Map
       const nodesToInsert = selectedNodes.map(nodeId => ({
@@ -208,20 +263,20 @@ export const QuestionEdit = () => {
         noi_dung: a.content,
         is_correct: a.isCorrect
       }));
-
       const { error: aError } = await supabase.from('dap_an').insert(answersToInsert);
       if (aError) throw aError;
 
       setSuccess(true);
-      // Optional: Clear form
-      setContent('');
-      setAnswers([
-        { id: 1, content: '', isCorrect: true },
-        { id: 2, content: '', isCorrect: false },
-        { id: 3, content: '', isCorrect: false },
-        { id: 4, content: '', isCorrect: false }
-      ]);
-      setSelectedNodes([]);
+      if (!isEditMode) {
+        setContent('Enter question content here...\n\nSupports LaTeX:\nInline: $E = mc^2$\nBlock: $$\\int_0^1 x^2 dx$$');
+        setAnswers([
+          { id: 1, content: '', isCorrect: true },
+          { id: 2, content: '', isCorrect: false },
+          { id: 3, content: '', isCorrect: false },
+          { id: 4, content: '', isCorrect: false }
+        ]);
+        setSelectedNodes([]);
+      }
       setTimeout(() => setSuccess(false), 3000);
     } catch (err: any) {
       setError(err.message || "Failed to save question");
@@ -256,18 +311,27 @@ export const QuestionEdit = () => {
           <button onClick={() => navigate(-1)} className="px-5 py-2.5 bg-transparent text-on-surface border border-outline-variant/30 font-medium rounded-lg text-sm hover:bg-surface-bright transition-colors">
             Cancel
           </button>
-          <button 
-            onClick={handleSave} 
-            disabled={saving}
-            className="px-6 py-2.5 bg-primary text-on-primary font-bold rounded-lg text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 disabled:opacity-50 disabled:shadow-none flex items-center"
-          >
-            <Save className="w-4 h-4 mr-2" />
-            {saving ? 'Committing...' : 'Commit Content'}
-          </button>
+          {!isReadOnly && (
+            <button 
+              onClick={handleSave} 
+              disabled={saving}
+              className="px-6 py-2.5 bg-primary text-on-primary font-bold rounded-lg text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 disabled:opacity-50 disabled:shadow-none flex items-center"
+            >
+              <Save className="w-4 h-4 mr-2" />
+              {saving ? 'Committing...' : (isEditMode ? 'Save Changes' : 'Commit Content')}
+            </button>
+          )}
         </div>
       </div>
 
-      <div className="flex flex-col gap-6 max-w-[1400px] w-full mx-auto p-6 overflow-y-auto custom-scrollbar">
+      <div className={cn("flex flex-col gap-6 max-w-[1400px] w-full mx-auto p-6 overflow-y-auto custom-scrollbar", isReadOnly && "pointer-events-none opacity-90")}>
+        {isReadOnly && (
+          <div className="flex items-center justify-center bg-secondary/10 border border-secondary/20 rounded-lg p-3 text-secondary text-sm font-bold shrink-0 mb-2 pointer-events-auto">
+            <ShieldCheck className="w-5 h-5 mr-2 shrink-0" />
+            <p>This question has been approved and is now READ-ONLY.</p>
+          </div>
+        )}
+        
         {error && (
           <div className="flex items-start bg-error/10 border border-error/20 rounded-lg p-3 text-error text-sm font-mono shrink-0">
             <AlertCircle className="w-5 h-5 mr-2 shrink-0" />

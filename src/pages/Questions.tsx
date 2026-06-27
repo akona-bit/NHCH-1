@@ -254,13 +254,17 @@ export const Questions = () => {
                       onClick={() => setExpandedId(isExpanded ? null : q.ma_cau_hoi)}
                     >
                       <div className="flex items-center mr-6 shrink-0">
-                        <input 
-                          type="checkbox" 
-                          className="mr-4 w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer bg-background"
-                          checked={selectedItems.includes(q.ma_cau_hoi)}
-                          onChange={(e) => toggleSelection(q.ma_cau_hoi, e as unknown as React.MouseEvent)}
-                          onClick={(e) => e.stopPropagation()}
-                        />
+                        {q.tinh_trang !== 'published' ? (
+                          <input 
+                            type="checkbox" 
+                            className="mr-4 w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer bg-background"
+                            checked={selectedItems.includes(q.ma_cau_hoi)}
+                            onChange={(e) => toggleSelection(q.ma_cau_hoi, e as unknown as React.MouseEvent)}
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                        ) : (
+                          <div className="mr-4 w-4 h-4" />
+                        )}
                         <div className={cn("flex flex-col", isExpanded ? "text-primary" : "text-on-surface")}>
                            <span className="font-mono font-bold tracking-wider">{shortId}</span>
                            <span className="text-[10px] font-mono text-outline-variant uppercase">{creatorName}</span>
@@ -295,18 +299,26 @@ export const Questions = () => {
                         </div>
 
                         <div className="flex items-center gap-1 border-l border-outline-variant/20 pl-6">
-                          <Link to={`/questions/edit/${q.ma_cau_hoi}`} onClick={(e) => e.stopPropagation()} className="p-2 text-outline hover:text-primary hover:bg-primary/10 rounded transition-colors" title="Edit">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-                          </Link>
-                          <button 
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setItemToDelete(q);
-                            }}
-                            className="p-2 text-outline hover:text-error hover:bg-error/10 rounded transition-colors" title="Delete"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          {q.tinh_trang !== 'published' ? (
+                            <>
+                              <Link to={`/questions/edit/${q.ma_cau_hoi}`} onClick={(e) => e.stopPropagation()} className="p-2 text-outline hover:text-primary hover:bg-primary/10 rounded transition-colors" title="Edit">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                              </Link>
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setItemToDelete(q);
+                                }}
+                                className="p-2 text-outline hover:text-error hover:bg-error/10 rounded transition-colors" title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </>
+                          ) : (
+                            <div className="p-2 text-outline/50" title="View Only (Approved)">
+                              <FileText className="w-4 h-4" />
+                            </div>
+                          )}
                           <ChevronRight className={cn("w-5 h-5 ml-2 text-outline transition-transform", isExpanded && "rotate-90 text-primary")} />
                         </div>
                       </div>
