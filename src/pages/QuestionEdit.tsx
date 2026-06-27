@@ -148,8 +148,7 @@ export const QuestionEdit = () => {
         if (!userData) {
            const { error: userInsertError } = await supabase.from('users').insert({
              user_id: userId,
-             ho_ten: user?.user?.user_metadata?.full_name || user?.user?.email?.split('@')[0] || 'Unknown',
-             role: 'User'
+             ho_ten: user?.user?.user_metadata?.full_name || user?.user?.email?.split('@')[0] || 'Unknown'
            });
            if (userInsertError) {
              throw new Error(`Lỗi khi tạo user: ${userInsertError.message}`);

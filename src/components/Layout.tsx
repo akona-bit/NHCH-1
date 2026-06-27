@@ -59,8 +59,7 @@ export const Layout = () => {
         const name = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Unknown';
         await supabase.from('users').insert({
           user_id: user.id,
-          ho_ten: name,
-          role: 'User'
+          ho_ten: name
         });
         setUserName(name);
       }
