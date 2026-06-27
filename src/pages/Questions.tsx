@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Plus, Upload, ChevronRight, ChevronDown, Check, MoreVertical, Database, GitBranch, Folder, Trash2, CheckCircle2, LayoutList, FileText, Network } from 'lucide-react';
+import { Search, Plus, Upload, ChevronRight, ChevronDown, Check, MoreVertical, Database, GitBranch, Folder, Trash2, CheckCircle2, LayoutList, FileText, Network, XCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { KnowledgeTree } from '../components/KnowledgeTree';
 import { syncKnowledgeTree, flattenKnowledgeTree, KnowledgeTreeNode, KnowledgeNode } from '../services/knowledgeService';
@@ -282,6 +282,10 @@ export const Questions = () => {
                           {q.tinh_trang === 'draft' || q.tinh_trang === 'Review' ? (
                             <span className="inline-flex items-center px-2 py-1 rounded bg-surface border border-outline-variant/30 text-outline-variant">
                               <MoreVertical className="w-3 h-3 mr-1" /> Pending
+                            </span>
+                          ) : q.tinh_trang === 'rejected' ? (
+                            <span className="inline-flex items-center px-2 py-1 rounded bg-error/10 border border-error/20 text-error">
+                              <XCircle className="w-3 h-3 mr-1" /> Rejected
                             </span>
                           ) : (
                             <span className="inline-flex items-center px-2 py-1 rounded bg-secondary/10 border border-secondary/20 text-secondary">
