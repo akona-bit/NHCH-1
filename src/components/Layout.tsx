@@ -114,7 +114,7 @@ export const Layout = () => {
   return (
     <div className="flex h-screen bg-background text-on-background overflow-hidden font-sans selection:bg-primary/30">
       {/* Sidebar */}
-      <aside className="w-64 glass-panel border-r-0 border-r-white/5 flex flex-col z-20 transition-all duration-300">
+      <aside className="w-64 glass-panel border-r-0 border-r-outline-variant flex flex-col z-20 transition-all duration-300">
         <div className="p-6">
           <h1 className="text-2xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-tight">{t('app.title')}</h1>
           <p className="text-[10px] text-on-surface-variant font-mono mt-1 tracking-[0.2em] uppercase opacity-70">{t('app.subtitle')}</p>
@@ -131,7 +131,7 @@ export const Layout = () => {
                   "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 group relative overflow-hidden",
                   isActive 
                     ? "text-primary shadow-lg shadow-primary/10" 
-                    : "text-on-surface-variant hover:text-on-surface hover:bg-white/5"
+                    : "text-on-surface-variant hover:text-on-surface hover:bg-surface-bright/50"
                 )}
               >
                 {({ isActive }) => (
@@ -156,7 +156,7 @@ export const Layout = () => {
                   "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 group relative overflow-hidden",
                   isActive 
                     ? "text-primary shadow-lg shadow-primary/10" 
-                    : "text-on-surface-variant hover:text-on-surface hover:bg-white/5"
+                    : "text-on-surface-variant hover:text-on-surface hover:bg-surface-bright/50"
                 )}
               >
                 {({ isActive }) => (
@@ -174,7 +174,7 @@ export const Layout = () => {
                 "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 group relative overflow-hidden",
                 isActive 
                   ? "text-primary shadow-lg shadow-primary/10" 
-                  : "text-on-surface-variant hover:text-on-surface hover:bg-white/5"
+                  : "text-on-surface-variant hover:text-on-surface hover:bg-surface-bright/50"
               )}
             >
               {({ isActive }) => (
@@ -200,8 +200,8 @@ export const Layout = () => {
           )}
         </nav>
 
-        <div className="p-4 border-t border-white/5">
-          <div className="flex items-center px-3 py-3 bg-surface-bright/30 backdrop-blur-sm rounded-lg border border-white/5 relative group hover:bg-surface-bright/50 transition-colors duration-300">
+        <div className="p-4 border-t border-outline-variant">
+          <div className="flex items-center px-3 py-3 bg-surface-bright/30 backdrop-blur-sm rounded-lg border border-outline-variant relative group hover:bg-surface-bright/50 transition-colors duration-300">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary font-bold text-sm mr-3 shrink-0 shadow-lg shadow-primary/20">
               {userName ? userName.charAt(0).toUpperCase() : (userEmail ? userEmail.charAt(0).toUpperCase() : 'U')}
             </div>
@@ -216,7 +216,7 @@ export const Layout = () => {
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden relative">
         {/* Topbar */}
-        <header className="h-16 glass-panel border-b-0 border-b-white/5 flex items-center justify-between px-8 z-10 sticky top-0">
+        <header className="h-16 glass-panel border-b-0 border-b-outline-variant flex items-center justify-between px-8 z-10 sticky top-0">
           <div className="flex items-center">
             <h2 className="text-lg font-display font-semibold tracking-tight text-on-surface">VACT Platform</h2>
           </div>

@@ -98,7 +98,7 @@ export const Dashboard = () => {
   return (
     <div className="h-full flex flex-col bg-transparent text-on-surface font-sans -m-6 overflow-hidden">
       {/* Top Header */}
-      <div className="flex justify-between items-center px-8 py-6 shrink-0 z-10 glass-panel border-b-0 border-b-white/5 shadow-md">
+      <div className="flex justify-between items-center px-8 py-6 shrink-0 z-10 glass-panel border-b-0 border-b-outline-variant shadow-md">
         <div className="animate-fade-in">
           <h1 className="text-2xl font-display font-bold text-on-surface tracking-wide flex items-center">
             Dashboard
@@ -119,7 +119,7 @@ export const Dashboard = () => {
             <span className="tracking-wider text-xs">LATENCY: 12ms</span>
           </div>
           <div className="flex items-center gap-3 animate-fade-in delay-200">
-            <button className="flex items-center gap-2 px-4 py-2 bg-surface-bright/50 border border-white/10 rounded-lg text-on-surface-variant hover:text-primary hover:border-primary/50 transition-all shadow-sm">
+            <button className="flex items-center gap-2 px-4 py-2 bg-surface-bright/50 border border-outline-variant rounded-lg text-on-surface-variant hover:text-primary hover:border-primary/50 transition-all shadow-sm">
               <TerminalSquare className="w-4 h-4" />
               <span className="text-xs font-semibold">Console</span>
             </button>
@@ -136,7 +136,7 @@ export const Dashboard = () => {
           
           {/* Metrics Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6 animate-slide-up">
-            <div className="relative glass-panel rounded-xl p-6 flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 border-white/5 hover:border-primary/30 overflow-hidden">
+            <div className="relative glass-panel rounded-xl p-6 flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 border-outline-variant hover:border-primary/30 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
               <div className="flex items-center gap-3 text-outline mb-4 relative z-10">
@@ -146,7 +146,7 @@ export const Dashboard = () => {
               <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-tight relative z-10">{stats.questions.toLocaleString()}</div>
             </div>
 
-            <div className="relative glass-panel rounded-xl p-6 flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl hover:shadow-secondary/10 transition-all duration-300 border-white/5 hover:border-secondary/30 overflow-hidden">
+            <div className="relative glass-panel rounded-xl p-6 flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl hover:shadow-secondary/10 transition-all duration-300 border-outline-variant hover:border-secondary/30 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
               <div className="flex items-center gap-3 text-outline mb-4 relative z-10">
@@ -156,7 +156,7 @@ export const Dashboard = () => {
               <div className="text-4xl font-bold text-primary tracking-tight">{stats.assets.toLocaleString()}</div>
             </div>
 
-            <div className="relative glass-panel rounded-xl p-6 flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 border-white/5 hover:border-primary/30 overflow-hidden delay-100">
+            <div className="relative glass-panel rounded-xl p-6 flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 border-outline-variant hover:border-primary/30 overflow-hidden delay-100">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
               <div className="flex items-center gap-3 text-outline mb-4 relative z-10">
@@ -166,7 +166,7 @@ export const Dashboard = () => {
               <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary tracking-tight relative z-10">{stats.users.toLocaleString()}</div>
             </div>
             
-            <div className="relative glass-panel rounded-xl p-6 flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl hover:shadow-secondary/10 transition-all duration-300 border-white/5 hover:border-secondary/30 overflow-hidden delay-200">
+            <div className="relative glass-panel rounded-xl p-6 flex flex-col justify-between group hover:-translate-y-1 hover:shadow-xl hover:shadow-secondary/10 transition-all duration-300 border-outline-variant hover:border-secondary/30 overflow-hidden delay-200">
               <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               
               <div className="flex items-center gap-3 text-outline mb-4 relative z-10">
@@ -192,8 +192,8 @@ export const Dashboard = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-slide-up delay-300">
             {/* System Logs */}
-            <div className="glass-panel border-white/5 rounded-xl flex flex-col h-96 overflow-hidden shadow-lg">
-              <div className="p-4 border-b border-white/5 bg-surface-bright/20 flex items-center justify-between">
+            <div className="glass-panel border-outline-variant rounded-xl flex flex-col h-96 overflow-hidden shadow-lg">
+              <div className="p-4 border-b border-outline-variant bg-surface-bright/20 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <FileText className="w-4 h-4 text-primary" />
                   <span className="tracking-widest text-xs font-bold text-on-surface uppercase">Recent Exams</span>
@@ -231,8 +231,8 @@ export const Dashboard = () => {
             </div>
 
             {/* Right: Terminal Stream */}
-            <div className="glass-panel border-white/5 rounded-xl flex flex-col h-96 overflow-hidden shadow-lg">
-              <div className="p-4 border-b border-white/5 bg-surface-bright/20 flex items-center justify-between">
+            <div className="glass-panel border-outline-variant rounded-xl flex flex-col h-96 overflow-hidden shadow-lg">
+              <div className="p-4 border-b border-outline-variant bg-surface-bright/20 flex items-center justify-between">
                 <div className="flex items-center gap-2 text-primary text-sm font-semibold tracking-wider">
                   <Code2 className="w-4 h-4" />
                   TERMINAL STREAM
