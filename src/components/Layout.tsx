@@ -22,7 +22,8 @@ import {
   Activity,
   Share2,
   Search,
-  GitCompare
+  GitCompare,
+  CheckCircle2
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { supabase } from '../supabaseClient';
@@ -112,6 +113,7 @@ export const Layout = () => {
     { name: t('nav.alerts'), icon: AlertTriangle, path: '/alerts' },
     { name: t('nav.knowledge'), icon: BookOpen, path: '/knowledge' },
     { name: t('nav.questions'), icon: HelpCircle, path: '/questions' },
+    { name: language === 'vi' ? 'Duyệt câu hỏi' : 'Pending Review', icon: CheckCircle2, path: '/questions/review' },
     { name: t('nav.matrix'), icon: Grid, path: '/matrix' },
     { name: t('nav.exams'), icon: FileText, path: '/exams' },
     { name: t('nav.analytics'), icon: BarChart2, path: '/analytics' },

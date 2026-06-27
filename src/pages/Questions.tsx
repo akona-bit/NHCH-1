@@ -49,7 +49,8 @@ export const Questions = () => {
           dap_an ( ma_dap_an, noi_dung, is_correct ),
           kien_thuc_cau_hoi (
             kien_thuc ( ten_kien_thuc )
-          )
+          ),
+          ngu_lieu:ma_ngu_lieu (ma_ngu_lieu, noi_dung)
         `)
         .order('ma_cau_hoi', { ascending: false });
 
@@ -202,6 +203,9 @@ export const Questions = () => {
               <Link to="/questions/new" className="px-4 py-2 bg-primary text-on-primary hover:bg-primary/90 rounded-lg text-sm font-bold transition-all shadow-sm flex items-center shadow-primary/20">
                 <Plus className="w-4 h-4 mr-2" /> {language === 'vi' ? 'Tạo Câu Hỏi' : 'New Question'}
               </Link>
+              <Link to="/questions/review" className="px-4 py-2 bg-secondary text-on-primary hover:bg-secondary/90 rounded-lg text-sm font-bold transition-all shadow-sm flex items-center shadow-secondary/20">
+                <CheckCircle2 className="w-4 h-4 mr-2" /> {language === 'vi' ? 'Duyệt Câu Hỏi' : 'Pending Review'}
+              </Link>
               {selectedItems.length > 0 && (
                 <button 
                   onClick={() => setBulkDeleteConfirm(true)}
@@ -313,11 +317,23 @@ export const Questions = () => {
                         <div className="grid grid-cols-12 gap-8">
                           {/* Left: Question & Answers */}
                           <div className="col-span-8">
+                            {q.ngu_lieu && q.ngu_lieu.noi_dung && (
+                              <div className="mb-6">
+                                <h4 className="text-xs font-mono font-bold text-primary uppercase tracking-widest mb-4 flex items-center">
+                                  <FileText className="w-4 h-4 mr-2" />
+                                  STIMULUS / ASSET
+                                </h4>
+                                <div className="font-sans text-sm text-on-surface leading-relaxed bg-primary/5 p-5 rounded-lg border border-primary/20">
+                                  <MathRenderer content={q.ngu_lieu.noi_dung} />
+                                </div>
+                              </div>
+                            )}
+
                             <h4 className="text-xs font-mono font-bold text-outline uppercase tracking-widest mb-4 flex items-center">
                               <FileText className="w-4 h-4 mr-2" />
                               Content Node
                             </h4>
-                            <div className="font-sans text-sm text-on-surface-variant leading-relaxed mb-6 bg-surface p-5 rounded-lg border border-outline-variant/20">
+                            <div className="font-sans text-sm text-on-surface-variant leading-relaxed mb-6 bg-surface p-5 rounded-lg border border-outline-variant/20 shadow-inner">
                               <MathRenderer content={q.noi_dung || ""} />
                             </div>
                             
