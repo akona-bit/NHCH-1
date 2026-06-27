@@ -134,24 +134,27 @@ export const Layout = () => {
 
         <nav className="flex-1 px-4 space-y-1 mt-4 overflow-y-auto flex flex-col">
           {navItems.map((item) => {
-            const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
+            const isItemActive = item.path === '/questions' 
+              ? location.pathname === '/questions' || (location.pathname.startsWith('/questions/') && !location.pathname.startsWith('/questions/review'))
+              : location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
+
             return (
               <NavLink
                 key={item.name}
                 to={item.path}
-                className={({ isActive }) => cn(
+                className={() => cn(
                   "flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 group relative overflow-hidden",
-                  isActive
+                  isItemActive
                     ? "text-primary shadow-lg shadow-primary/10"
                     : "text-on-surface-variant hover:text-on-surface hover:bg-surface-bright/50"
                 )}
               >
-                {({ isActive }) => (
+                {() => (
                   <>
-                    {isActive && <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent pointer-events-none" />}
+                    {isItemActive && <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent pointer-events-none" />}
                     <item.icon className={cn(
                       "mr-3 h-5 w-5 transition-all duration-300 z-10",
-                      isActive ? "text-primary scale-110" : "text-outline group-hover:text-on-surface group-hover:scale-110"
+                      isItemActive ? "text-primary scale-110" : "text-outline group-hover:text-on-surface group-hover:scale-110"
                     )} />
                     <span className="z-10">{item.name}</span>
                   </>
