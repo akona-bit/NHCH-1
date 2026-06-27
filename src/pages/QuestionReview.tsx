@@ -4,8 +4,11 @@ import { cn } from '../lib/utils';
 import { MathRenderer } from '../components/MathRenderer';
 import { supabase } from '../supabaseClient';
 import { LoadingOverlay } from '../components/LoadingOverlay';
+import { AlertModal } from '../components/AlertModal';
+import { useSettings } from '../contexts/SettingsContext';
 
 export const QuestionReview = () => {
+  const { language } = useSettings();
   const [questions, setQuestions] = useState<any[]>([]);
   const [selectedQuestion, setSelectedQuestion] = useState<any>(null);
   const [answers, setAnswers] = useState<any[]>([]);
@@ -13,6 +16,8 @@ export const QuestionReview = () => {
   const [notes, setNotes] = useState('');
   const [processing, setProcessing] = useState(false);
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertInfo, setAlertInfo] = useState({ title: '', message: '' });
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -79,8 +84,21 @@ export const QuestionReview = () => {
   const handleStatusUpdate = async (status: 'published' | 'rejected' | 'archived') => {
     if (!selectedQuestion) return;
     
+    if (status === 'published' && selectedQuestion.nguoi_tao === currentUser?.id) {
+      setAlertInfo({
+        title: language === 'vi' ? 'Không Hợp Lệ' : 'Invalid Action',
+        message: language === 'vi' ? 'Bạn không thể tự duyệt câu hỏi do chính mình tạo ra!' : 'You cannot approve a question created by yourself!'
+      });
+      setAlertOpen(true);
+      return;
+    }
+    
     if (status === 'rejected' && !notes.trim()) {
-      alert("Bạn phải nhập lý do (Reviewer Notes) trước khi từ chối câu hỏi.");
+      setAlertInfo({
+        title: language === 'vi' ? 'Thiếu Thông Tin' : 'Missing Information',
+        message: language === 'vi' ? 'Bạn phải nhập lý do (Reviewer Notes) trước khi từ chối câu hỏi để tác giả biết cần sửa ở đâu.' : 'You must provide Reviewer Notes before rejecting a question so the author knows what to fix.'
+      });
+      setAlertOpen(true);
       return;
     }
 
@@ -118,6 +136,12 @@ export const QuestionReview = () => {
 
   return (
     <div className="flex gap-6 h-full w-full relative">
+      <AlertModal 
+        isOpen={alertOpen}
+        onClose={() => setAlertOpen(false)}
+        title={alertInfo.title}
+        message={alertInfo.message}
+      />
       <LoadingOverlay isLoading={processing} />
       {/* Queue Sidebar */}
       <div className="w-[350px] flex flex-col bg-surface shadow-sm rounded-xl border border-outline-variant overflow-hidden">
