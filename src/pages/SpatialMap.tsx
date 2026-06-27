@@ -553,7 +553,7 @@ export const SpatialMap = () => {
                         className="text-[10px] text-outline font-mono bg-surface-bright/50 px-2 py-1 rounded border border-outline-variant hover:border-primary hover:text-primary transition-colors flex items-center gap-1"
                         title={language === 'vi' ? 'Sao chép ID' : 'Copy ID'}
                       >
-                        {asset.ma_ngu_lieu.substring(0, 8)}...
+                        {String(asset.ma_ngu_lieu).substring(0, 8)}
                       </button>
                       <div className="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button 
