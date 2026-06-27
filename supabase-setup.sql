@@ -152,7 +152,7 @@ CREATE POLICY "Delete ngu_lieu" ON ngu_lieu FOR DELETE USING (auth.role() = 'aut
 -- CAU HOI: Users can view their own questions or all questions if they are reviewers (simplification: all can view for analytics)
 CREATE POLICY "View own questions" ON cau_hoi FOR SELECT USING (true);
 CREATE POLICY "Insert own questions" ON cau_hoi FOR INSERT WITH CHECK (auth.uid() = nguoi_tao);
-CREATE POLICY "Update own questions" ON cau_hoi FOR UPDATE USING (auth.uid() = nguoi_tao);
+CREATE POLICY "Update own questions" ON cau_hoi FOR UPDATE USING (auth.role() = 'authenticated');
 CREATE POLICY "Delete own questions" ON cau_hoi FOR DELETE USING (auth.uid() = nguoi_tao);
 
 -- DAP AN: Users can manage answers for their own questions
