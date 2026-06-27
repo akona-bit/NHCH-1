@@ -92,8 +92,8 @@ export const Layout = () => {
     return <div className="h-screen w-screen flex items-center justify-center bg-background text-on-background">Loading...</div>;
   }
 
-  const ADMIN_ID = 'f1a81610-bd37-4cc6-9c22-df3e3ea9255d';
-  const isAdmin = userId === ADMIN_ID;
+  const ADMIN_EMAIL = 'minhducle629@gmail.com';
+  const isAdmin = userEmail === ADMIN_EMAIL;
   const restrictedPaths = ['/users', '/alerts', '/analytics', '/irt-analysis'];
 
   const navItems = [
